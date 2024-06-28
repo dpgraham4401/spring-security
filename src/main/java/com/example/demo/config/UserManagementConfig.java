@@ -2,35 +2,31 @@ package com.example.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
-/**
- * It's good practice to separate configuration classes by concern.
- * See listing 2.15
- */
+import javax.sql.DataSource;
+
 @Configuration
 public class UserManagementConfig {
 
     @Bean
-    UserDetailsService userDetailsService() {
-        var user = User.withUsername("john")
-                .password("12345")
-                .authorities("read")
-                .build();
+    public UserDetailsService userDetailsService(DataSource dataSource) {
+        System.out.println("datasource: " + dataSource);
+        String usersByUsernameQuery = "select username, password, enabled from spring.users where username = ?";
+        String authsByUserQuery = "select username, authority from spring.authorities where username = ?";
+        var userDetailsManager = new JdbcUserDetailsManager(dataSource);
+        userDetailsManager.setUsersByUsernameQuery(usersByUsernameQuery);
+        userDetailsManager.setAuthoritiesByUsernameQuery(authsByUserQuery);
+        return userDetailsManager;
 
-        return new InMemoryUserDetailsManager(user);
     }
 
-    /**
-     * Responsible for checking if the provided password matches the credentials of our user.
-     * It doesn't need to know where the password comes from (db, secret manager, LDAP).
-     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
     }
+
 }
