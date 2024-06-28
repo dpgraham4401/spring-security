@@ -14,12 +14,10 @@ public class UserManagementConfig {
 
     @Bean
     public UserDetailsService userDetailsService(DataSource dataSource) {
-        System.out.println("datasource: " + dataSource);
-        String usersByUsernameQuery = "select username, password, enabled from spring.users where username = ?";
-        String authsByUserQuery = "select username, authority from spring.authorities where username = ?";
         var userDetailsManager = new JdbcUserDetailsManager(dataSource);
-        userDetailsManager.setUsersByUsernameQuery(usersByUsernameQuery);
-        userDetailsManager.setAuthoritiesByUsernameQuery(authsByUserQuery);
+        userDetailsManager.setUsersByUsernameQuery("select username, password, enabled from foo.users where username = ?");
+        userDetailsManager.setAuthoritiesByUsernameQuery("select a.user_id, a.authority from foo.authorities a " +
+                "inner join foo.users u on a.user_id = u.id where u.username = ?");
         return userDetailsManager;
 
     }

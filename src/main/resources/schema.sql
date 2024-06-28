@@ -1,8 +1,8 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE SCHEMA IF NOT EXISTS spring;
+CREATE SCHEMA IF NOT EXISTS foo;
 
-CREATE TABLE IF NOT EXISTS spring.users
+CREATE TABLE IF NOT EXISTS foo.users
 (
     id       UUID PRIMARY KEY      DEFAULT uuid_generate_v4(),
     username VARCHAR(50)  NOT NULL UNIQUE,
@@ -10,14 +10,14 @@ CREATE TABLE IF NOT EXISTS spring.users
     enabled  BOOLEAN      NOT NULL DEFAULT true
 );
 
-CREATE INDEX idx_username ON spring.users (username);
+CREATE INDEX IF NOT EXISTS idx_username ON foo.users (username);
 
-CREATE TABLE IF NOT EXISTS spring.authorities
+CREATE TABLE IF NOT EXISTS foo.authorities
 (
     id        SERIAL PRIMARY KEY,
-    username  VARCHAR(255) NOT NULL,
+    user_id   UUID         NOT NULL,
     authority VARCHAR(255) NOT NULL,
-    CONSTRAINT fk_authorities_users FOREIGN KEY (username) REFERENCES spring.users (username)
+    CONSTRAINT fk_authorities_users FOREIGN KEY (user_id) REFERENCES foo.users (id)
 );
 
-CREATE UNIQUE INDEX ix_auth_username ON spring.authorities (username, authority);
+CREATE UNIQUE INDEX IF NOT EXISTS ix_auth_username ON foo.authorities (user_id, authority);
