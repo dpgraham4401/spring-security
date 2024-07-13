@@ -13,4 +13,11 @@ public class HelloService {
     public String findHelloStringByNothing() {
         return "Hello Service Method!\n";
     }
+
+    // We can use the '#' symbol to access the method parameters
+    // We also have access to the full 'authentication' object in the SpEL expression
+    @PreAuthorize("#name == authentication.name")
+    public String getUserHelloString(String name) {
+        return "Hello " + name + "!\n";
+    }
 }
