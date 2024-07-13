@@ -29,10 +29,6 @@ public class AuthConfig {
         // Back to implementing HTTP Basic authentication for this Authorization Chapter examples
         http.httpBasic(Customizer.withDefaults());
 
-        // This reads as: "Any request must be authenticated with a user that has the 'WRITE' authority"
-        // Note: Authorities are case-sensitive
-        http.authorizeHttpRequests(c -> c.anyRequest().hasAnyAuthority("WRITE"));
-
         return http.build();
     }
 }
