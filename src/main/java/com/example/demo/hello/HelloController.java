@@ -18,10 +18,14 @@ public class HelloController {
         return helloService.findHelloStringByNothing();
     }
 
-
-    // Here we're defining a new endpoint that take a path variable
     @GetMapping("/hello/{name}")
     public String hello(@PathVariable String name) {
         return helloService.getUserHelloString(name);
+    }
+
+    // A new endpoint that returns a (new) object of type Greeting
+    @GetMapping("/hello/{name}/greeting")
+    public Greeting greeting(@PathVariable String name) {
+        return helloService.getGreeting(name);
     }
 }
