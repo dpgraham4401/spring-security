@@ -4,15 +4,14 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-
 @Service
 public class HelloService {
 
-    private final Map<String, Greeting> myGreeting = Map.of(
-            "john", new Greeting("Howdy", true),
-            "david", new Greeting("Guten abend", false)
-    );
+    private final GreetingRepository greetingRepository;
+
+    public HelloService(GreetingRepository greetingRepository) {
+        this.greetingRepository = greetingRepository;
+    }
 
     // This method is secured with the @PreAuthorize annotation
     // It checks the condition before the method is executed
@@ -32,6 +31,6 @@ public class HelloService {
     //
     @PostAuthorize("returnObject.isPositive().equals(true)")
     public Greeting getGreeting(String name) {
-        return myGreeting.get(name);
+        return greetingRepository.findByUsername(name);
     }
 }
