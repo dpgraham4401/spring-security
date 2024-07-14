@@ -28,8 +28,6 @@ CREATE TABLE IF NOT EXISTS foo.greetings
     user_id     UUID         NOT NULL,
     message     VARCHAR(255) NOT NULL,
     is_positive BOOLEAN      NOT NULL DEFAULT true,
-    CONSTRAINT fk_greetings_users FOREIGN KEY (user_id) REFERENCES foo.users (id)
+    CONSTRAINT fk_greetings_users FOREIGN KEY (user_id) REFERENCES foo.users (id),
+    CONSTRAINT unique_user_id_greeting UNIQUE (user_id)
 );
-
-ALTER TABLE foo.greetings
-    ADD CONSTRAINT unique_user_id UNIQUE (user_id);

@@ -26,10 +26,7 @@ public class HelloService {
         return "Hello " + name + "!\n";
     }
 
-    // This method is secured with the @PostAuthorize annotation
-    // It checks the SpEL condition after the method is executed, the annotation has access to the return value
-    //
-    @PostAuthorize("returnObject.isPositive().equals(true)")
+    @PreAuthorize("hasPermission(#name, 'foo', 'READ')")
     public Greeting getGreeting(String name) {
         return greetingRepository.findByUsername(name);
     }

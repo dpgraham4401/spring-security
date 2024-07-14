@@ -49,4 +49,8 @@ public class Greeting {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public String getUserId() {
+        return userId;
+    }
 }
