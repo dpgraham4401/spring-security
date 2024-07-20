@@ -1,5 +1,6 @@
 package com.example.demo.product;
 
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class ProductService {
         return productRepository.getProductsById(id);
     }
 
+    @PostFilter("filterObject.owner == authentication.name")
     public List<Product> findSellingProducts() {
         // for this example, we're asking the repository to return all products (regardless of the owner)
         // So we can see the pre-filtering in action
