@@ -16,16 +16,16 @@ public class Product {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "owner")
-    private String owner;
+    @Column(name = "owner_id")
+    private Integer ownerId;
 
     @Column(name = "price")
     private Float price;
 
 
-    public Product(String name, String owner, Float price) {
+    public Product(String name, Integer ownerId, Float price) {
         this.name = name;
-        this.owner = owner;
+        this.ownerId = ownerId;
         this.price = price;
     }
 
@@ -57,11 +57,11 @@ public class Product {
         this.price = price;
     }
 
-    public String getOwner() {
-        return owner;
+    public Integer getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
+    public void setOwnerId(Integer ownerId) {
+        this.ownerId = ownerId;
     }
 }

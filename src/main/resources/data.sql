@@ -20,21 +20,21 @@ VALUES (2, 'READ')
 ON CONFLICT DO NOTHING;
 
 -- create product that belong to John
-INSERT INTO foo.products(owner, name, price)
-VALUES ('john', 'bowl', 4.99)
+INSERT INTO foo.products(owner_id, name, price)
+VALUES (1, 'bowl', 4.99)
 ON CONFLICT DO NOTHING;
 
 -- create product that belong to John
-INSERT INTO foo.products(owner, name, price)
-VALUES ('john', 'plate', 5.99)
+INSERT INTO foo.products(owner_id, name, price)
+VALUES (1, 'plate', 5.99)
 ON CONFLICT DO NOTHING;
 
 -- create product that belong to John
-INSERT INTO foo.products(owner, name, price)
-VALUES ('john', 'spoon', 1.69)
+INSERT INTO foo.products(owner_id, name, price)
+VALUES (1, 'spoon', 1.69)
 ON CONFLICT DO NOTHING;
 
 -- create product that belong to David
-INSERT INTO foo.products(owner, name, price)
-VALUES ('david', 'book', 32.00)
+INSERT INTO foo.products(owner_id, name, price)
+VALUES (2, 'book', 32.00)
 ON CONFLICT DO NOTHING;

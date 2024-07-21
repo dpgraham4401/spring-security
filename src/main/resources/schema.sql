@@ -24,10 +24,10 @@ CREATE UNIQUE INDEX IF NOT EXISTS ix_auth_username ON foo.authorities (user_id, 
 
 CREATE TABLE IF NOT EXISTS foo.products
 (
-    id    SERIAL PRIMARY KEY,
-    owner VARCHAR      NOT NULL,
-    name  VARCHAR(255) NOT NULL,
-    price FLOAT        NOT NULL,
-    CONSTRAINT fk_greetings_users FOREIGN KEY (owner) REFERENCES foo.users (username),
-    CONSTRAINT unique_name_user_id UNIQUE (name, owner)
+    id       SERIAL PRIMARY KEY,
+    owner_id INTEGER      NOT NULL,
+    name     VARCHAR(255) NOT NULL,
+    price    FLOAT        NOT NULL,
+    CONSTRAINT fk_greetings_users FOREIGN KEY (owner_id) REFERENCES foo.users (id),
+    CONSTRAINT unique_name_user_id UNIQUE (name, owner_id)
 );

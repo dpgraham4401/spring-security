@@ -20,10 +20,8 @@ public class ProductService {
     }
 
     // Here we've botched the PostFilter to show that we can use custom attributes of our custom Principal object
-    @PostFilter("'foobar' == authentication.principal.getCustomAttribute()")
+    @PostFilter("filterObject.ownerId == authentication.principal.getId()")
     public List<Product> findSellingProducts() {
-        // for this example, we're asking the repository to return all products (regardless of the owner)
-        // So we can see the pre-filtering in action
         return productRepository.findAllByOrderByName();
     }
 
@@ -32,7 +30,7 @@ public class ProductService {
     // This is assuming that the input is coming from a trusted source.
     // If we have more than one parameter (collection), use the filterTarget attribute to specify the parameter to
     // filter
-    @PreFilter(value = "filterObject.owner == authentication.name", filterTarget = "products")
+    @PreFilter(value = "filterObject.ownerId == authentication.principal.getId()", filterTarget = "products")
     public void updatePrices(List<Product> products, List<Float> prices) {
         for (Product product : products) {
             product.setPrice(product.getPrice() * prices.get(products.indexOf(product)));
