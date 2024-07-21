@@ -10,12 +10,14 @@ public class SecurityUserDetails implements UserDetails {
 
     private final User user;
     private final Collection<? extends GrantedAuthority> authorities;
+    private final String customAttribute;
 
 
     public SecurityUserDetails(User user,
                                Collection<? extends GrantedAuthority> authorities) {
         this.user = user;
         this.authorities = authorities;
+        customAttribute = "foobar";
     }
 
     @Override
@@ -51,5 +53,9 @@ public class SecurityUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return user.isEnabled();
+    }
+
+    public String getCustomAttribute() {
+        return customAttribute;
     }
 }

@@ -1,12 +1,12 @@
 package com.example.demo.config;
 
+import com.example.demo.user.SecurityUserDetails;
+import com.example.demo.user.SecurityUserDetailsService;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -21,10 +21,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomAuthProvider implements AuthenticationProvider {
 
-    private final UserDetailsService userDetailsService;
+    private final SecurityUserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
-    public CustomAuthProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+    public CustomAuthProvider(SecurityUserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -41,10 +41,13 @@ public class CustomAuthProvider implements AuthenticationProvider {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        UserDetails user = userDetailsService.loadUserByUsername(username);
+        SecurityUserDetails user = userDetailsService.loadUserByUsername(username);
 
         if (passwordEncoder.matches(password, user.getPassword())) {
-            return new UsernamePasswordAuthenticationToken(username, password, user.getAuthorities());
+            // This is a BIG fix!!! I was passing the username, instead of user object as
+            // the principal of the Authentication object. So every time I tried to access the principal's
+            // attributes, I was getting a 'cannot cast String to UserDetails' exception.
+            return new UsernamePasswordAuthenticationToken(user, password, user.getAuthorities());
         } else {
             throw new BadCredentialsException("Authentication failed");
         }
